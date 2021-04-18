@@ -1,33 +1,64 @@
-import { CreateUserInput, CreateUserOutput } from './dtos/create-user.dto';
+import { JwtService } from './../jwt/jwt.service';
+import { UserProfileOutput } from './dtos/user-profile.dto';
+import { SignInInput, SignInOutput } from './dtos/signIn.dto';
+import { SignUpInput, SignUpOutput } from './dtos/signUp.dto';
 import { Injectable, Inject } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
-import { User, Prisma } from '@prisma/client';
-
+import { PrismaService } from '../common/prisma.service';
+import { hashPassword, validatePassword } from '../common/utils/password';
+import { customAssert } from '../common/utils/customAssert';
 @Injectable()
 export class UserService {
-  constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: PrismaService,
+    @Inject(JwtService) private readonly jwtService: JwtService,
+  ) {}
 
-  async user(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-  ): Promise<User | null> {
-    return this.prisma.user.findUnique({
-      where: userWhereUniqueInput,
-    });
+  async findById(userId: number): Promise<UserProfileOutput> {
+    try {
+      const user = await this.prisma.user.findUnique({ where: { id: userId } });
+      return {
+        isSucceeded: true,
+        user,
+      };
+    } catch (error) {
+      return customAssert(false, 'User Not Found');
+    }
   }
 
-  async createUser(data: CreateUserInput): Promise<CreateUserOutput> {
+  async signUp(data: SignUpInput): Promise<SignUpOutput> {
     try {
+      const { password } = data;
+      const hashedPassword = await hashPassword(password);
+
       await this.prisma.user.create({
-        data,
+        data: {
+          ...data,
+          password: hashedPassword,
+        },
       });
       return {
         isSucceeded: true,
       };
     } catch (error) {
+      return customAssert(false, error);
+    }
+  }
+
+  async signIn({ email, password }: SignInInput): Promise<SignInOutput> {
+    try {
+      const user = await this.prisma.user.findUnique({ where: { email } });
+      if (!user) return customAssert(false, 'User not found');
+
+      const checkedPassword = await validatePassword(password, user.password);
+      if (!checkedPassword) return customAssert(false, 'Wrong password');
+
+      const token = this.jwtService.sign(user.id);
       return {
-        isSucceeded: false,
-        error,
+        isSucceeded: true,
+        token,
       };
+    } catch (error) {
+      return customAssert(false, error);
     }
   }
 }
