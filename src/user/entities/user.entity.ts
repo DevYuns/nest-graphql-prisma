@@ -11,6 +11,7 @@ import {
   IsDate,
   IsEnum,
   Length,
+  IsBoolean,
 } from 'class-validator';
 
 const PASSWORD_LENGTH = 8;
@@ -37,6 +38,10 @@ export class UserEntity {
   @IsString()
   @Length(PASSWORD_LENGTH)
   password: string;
+
+  @Field(() => Boolean, { defaultValue: false })
+  @IsBoolean()
+  verified: boolean;
 
   @Field(() => String)
   @IsString()

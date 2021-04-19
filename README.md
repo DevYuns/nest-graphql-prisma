@@ -54,11 +54,12 @@ yarn run migrate:dev
 - signUp mutation
 - signIn mutation
 - updateProfile mutation
+- changePassword mutation
 
 ### Notes
 
-- Entity class in each module must be sync with model in `schema.prisma`.
 - Entities are for GraphQL and Models are for Prisma.
+- Fields in Entity class must be sync with model in `schema.prisma`.
 - You can make your own dto classes for resolvers.
 - queries or mutations with `@UseGuards(AuthGuard)` decorator should be sent with jwt in headers
 - you can get a token when executing `signIn mutaion`
