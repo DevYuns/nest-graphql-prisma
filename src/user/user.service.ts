@@ -32,6 +32,13 @@ export class UserService {
 
   async signUp(data: SignUpInput): Promise<SignUpOutput> {
     try {
+      const exists = await this.prisma.user.findUnique({
+        where: { email: data.email },
+      });
+      if (exists) {
+        return customAssert(false, 'There is a user with that email already');
+      }
+
       const { password } = data;
       const hashedPassword = await hashPassword(password);
 
