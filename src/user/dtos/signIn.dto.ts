@@ -1,20 +1,10 @@
+import { UserEntity } from './../entities/user.entity';
 import { CommonOutput } from './../../common/dtos/common.dto';
 import 'reflect-metadata';
-import { InputType, Field, ObjectType } from '@nestjs/graphql';
-import { IsEmail, IsString, Length } from 'class-validator';
+import { InputType, Field, ObjectType, PickType } from '@nestjs/graphql';
 
-@InputType('SignInInputType', { isAbstract: true })
-@ObjectType()
-export class SignInInput {
-  @Field()
-  @IsEmail()
-  email: string;
-
-  @Field()
-  @IsString()
-  @Length(8)
-  password: string;
-}
+@InputType()
+export class SignInInput extends PickType(UserEntity, ['email', 'password']) {}
 
 @ObjectType()
 export class SignInOutput extends CommonOutput {

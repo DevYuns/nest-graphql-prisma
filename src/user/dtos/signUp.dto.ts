@@ -1,45 +1,29 @@
+import { UserEntity } from './../entities/user.entity';
 import { CommonOutput } from './../../common/dtos/common.dto';
 import 'reflect-metadata';
 import {
   InputType,
-  Field,
   ObjectType,
-  registerEnumType,
+  PickType,
+  PartialType,
+  IntersectionType,
 } from '@nestjs/graphql';
-import { IsEmail, IsString, Length } from 'class-validator';
+@InputType()
+class MainInfo extends PickType(UserEntity, [
+  'email',
+  'password',
+  'birthday',
+  'name',
+  'gender',
+]) {}
 
-const PASSWORD_LENGTH = 8;
+@InputType()
+class AdditionalInfo extends PartialType(
+  PickType(UserEntity, ['description']),
+) {}
 
-export enum Gender {
-  male = 'male',
-  female = 'female',
-}
-
-registerEnumType(Gender, { name: 'Gender' });
-
-@InputType('SignUpInputType', { isAbstract: true })
-@ObjectType()
-export class SignUpInput {
-  @Field()
-  @IsEmail()
-  email: string;
-
-  @Field()
-  @IsString()
-  @Length(PASSWORD_LENGTH)
-  password: string;
-
-  @Field(() => String)
-  @IsString()
-  name: string;
-
-  @Field(() => Date)
-  birthday: Date;
-
-  @Field(() => Gender)
-  @IsString()
-  gender: Gender;
-}
+@InputType()
+export class SignUpInput extends IntersectionType(MainInfo, AdditionalInfo) {}
 
 @ObjectType()
 export class SignUpOutput extends CommonOutput {}
