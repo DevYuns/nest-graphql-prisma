@@ -1,3 +1,7 @@
+import {
+  UpdateProfileOutput,
+  UpdateProfileInput,
+} from './dtos/update-profile.dto';
 import { User } from '@prisma/client';
 import { UserEntity } from './entities/user.entity';
 import { AuthUser } from './../auth/auth-user.decorator';
@@ -26,5 +30,14 @@ export class UserResolver {
   @Mutation(() => SignInOutput)
   async signIn(@Args('data') data: SignInInput): Promise<SignInOutput> {
     return this.userService.signIn(data);
+  }
+
+  @Mutation(() => UpdateProfileOutput)
+  @UseGuards(AuthGuard)
+  async updateProfile(
+    @AuthUser() authUser: User,
+    @Args('data') data: UpdateProfileInput,
+  ): Promise<UpdateProfileOutput> {
+    return this.userService.updateProfile(authUser.id, data);
   }
 }

@@ -1,20 +1,24 @@
 import { Gender } from './../dtos/signUp.dto';
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, InputType } from '@nestjs/graphql';
 
+@InputType({ isAbstract: true })
 @ObjectType()
 export class UserEntity {
-  @Field({ nullable: true })
+  @Field(() => Number, { nullable: true })
   id?: number;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   email?: string;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   name?: string;
 
-  @Field({ nullable: true })
+  @Field(() => Date, { nullable: true })
   birthday?: Date;
 
-  @Field({ nullable: true })
+  @Field(() => Gender, { nullable: true })
   gender?: Gender;
+
+  @Field(() => String, { nullable: true })
+  description?: string;
 }

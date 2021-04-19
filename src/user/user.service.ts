@@ -1,3 +1,8 @@
+import { User } from '@prisma/client';
+import {
+  UpdateProfileInput,
+  UpdateProfileOutput,
+} from './dtos/update-profile.dto';
 import { JwtService } from './../jwt/jwt.service';
 import { UserProfileOutput } from './dtos/user-profile.dto';
 import { SignInInput, SignInOutput } from './dtos/signIn.dto';
@@ -56,6 +61,24 @@ export class UserService {
       return {
         isSucceeded: true,
         token,
+      };
+    } catch (error) {
+      return customAssert(false, error);
+    }
+  }
+
+  async updateProfile(
+    userId: number,
+    data: UpdateProfileInput,
+  ): Promise<UpdateProfileOutput> {
+    try {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: data,
+      });
+
+      return {
+        isSucceeded: true,
       };
     } catch (error) {
       return customAssert(false, error);

@@ -8,6 +8,8 @@ import {
 } from '@nestjs/graphql';
 import { IsEmail, IsString, Length } from 'class-validator';
 
+const PASSWORD_LENGTH = 8;
+
 export enum Gender {
   male = 'male',
   female = 'female',
@@ -24,7 +26,7 @@ export class SignUpInput {
 
   @Field()
   @IsString()
-  @Length(8)
+  @Length(PASSWORD_LENGTH)
   password: string;
 
   @Field(() => String)

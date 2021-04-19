@@ -16,12 +16,14 @@ enum Gender {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String?   @unique
-  password  String?
-  name      String?
-  birthday  DateTime?
-  gender    Gender?
+  id          Int       @id @default(autoincrement())
+  email       String?   @unique
+  password    String?
+  name        String?
+  birthday    DateTime?
+  gender      Gender?
+  description String?
+
   verified  Boolean?  @default(false)
   createdAt DateTime? @default(now())
   updatedAt DateTime? @default(now()) @updatedAt
