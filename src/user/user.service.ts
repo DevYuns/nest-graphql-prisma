@@ -1,3 +1,4 @@
+import { PrismaService } from './../prisma/prisma.service';
 import { UserEntity } from './entities/user.entity';
 import {
   UpdateProfileInput,
@@ -8,7 +9,6 @@ import { UserProfileOutput } from './dtos/user-profile.dto';
 import { SignInInput, SignInOutput } from './dtos/signIn.dto';
 import { SignUpInput, SignUpOutput } from './dtos/signUp.dto';
 import { Injectable, Inject } from '@nestjs/common';
-import { PrismaService } from '../common/prisma.service';
 import { hashPassword, validatePassword } from '../common/utils/password';
 import { customAssert } from '../common/utils/customAssert';
 @Injectable()
@@ -36,7 +36,7 @@ export class UserService {
         where: { email: data.email },
       });
       if (exists) {
-        return customAssert(false, 'There is a user with that email already');
+        return customAssert(false, 'There is an user with that email already');
       }
 
       const { password } = data;

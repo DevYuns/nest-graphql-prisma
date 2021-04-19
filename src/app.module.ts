@@ -1,3 +1,4 @@
+import { PrismaModule } from './prisma/prisma.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
 import { AuthModule } from './auth/auth.module';
 import {
@@ -31,6 +32,7 @@ import * as Joi from 'joi';
     }),
     UserModule,
     AuthModule,
+    PrismaModule,
   ],
 })
 export class AppModule implements NestModule {
