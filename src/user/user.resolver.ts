@@ -1,8 +1,11 @@
 import {
+  UpdatePasswordOutput,
+  UpdatePasswordInput,
+} from './dtos/update-password.dto';
+import {
   UpdateProfileOutput,
   UpdateProfileInput,
 } from './dtos/update-profile.dto';
-import { User } from '@prisma/client';
 import { UserEntity } from './entities/user.entity';
 import { AuthUser } from './../auth/auth-user.decorator';
 import { AuthGuard } from './../auth/auth.guard';
@@ -18,7 +21,7 @@ export class UserResolver {
 
   @Query(() => UserEntity)
   @UseGuards(AuthGuard)
-  me(@AuthUser() authUser: User) {
+  me(@AuthUser() authUser: UserEntity) {
     return authUser;
   }
 
@@ -35,9 +38,18 @@ export class UserResolver {
   @Mutation(() => UpdateProfileOutput)
   @UseGuards(AuthGuard)
   async updateProfile(
-    @AuthUser() authUser: User,
+    @AuthUser() authUser: UserEntity,
     @Args('data') data: UpdateProfileInput,
   ): Promise<UpdateProfileOutput> {
     return this.userService.updateProfile(authUser.id, data);
+  }
+
+  @Mutation(() => UpdatePasswordOutput)
+  @UseGuards(AuthGuard)
+  async updatePassword(
+    @AuthUser() authUser: UserEntity,
+    @Args('data') data: UpdatePasswordInput,
+  ): Promise<UpdatePasswordOutput> {
+    return this.userService.updatePassword(authUser, data);
   }
 }

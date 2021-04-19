@@ -1,3 +1,4 @@
+import { UserEntity } from './entities/user.entity';
 import {
   UpdateProfileInput,
   UpdateProfileOutput,
@@ -40,9 +41,7 @@ export class UserService {
           password: hashedPassword,
         },
       });
-      return {
-        isSucceeded: true,
-      };
+      return { isSucceeded: true };
     } catch (error) {
       return customAssert(false, error);
     }
@@ -76,9 +75,25 @@ export class UserService {
         data: data,
       });
 
-      return {
-        isSucceeded: true,
-      };
+      return { isSucceeded: true };
+    } catch (error) {
+      return customAssert(false, error);
+    }
+  }
+
+  async updatePassword(
+    authUser: UserEntity,
+    { password }: UpdateProfileInput,
+  ): Promise<UpdateProfileOutput> {
+    try {
+      const newPassword = await hashPassword(password);
+
+      await this.prisma.user.update({
+        where: { id: authUser.id },
+        data: { password: newPassword },
+      });
+
+      return { isSucceeded: true };
     } catch (error) {
       return customAssert(false, error);
     }

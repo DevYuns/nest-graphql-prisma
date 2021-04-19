@@ -1,4 +1,4 @@
-# Nest를 활용한 백엔드 구축
+# Nest with graphql and prisma boilerplate
 
 ### Specification
 
@@ -50,11 +50,15 @@ yarn run migrate:dev
 
 ### User Rolsolver:
 
-- signUp
-- signIn
 - me query
+- signUp mutation
+- signIn mutation
+- updateProfile mutation
 
 ### Notes
 
-- `me query` should be sent with jwt in headers
+- Entity class in each module must be sync with model in `schema.prisma`.
+- Entities are for GraphQL and Models are for Prisma.
+- You can make your own dto classes for resolvers.
+- queries or mutations with `@UseGuards(AuthGuard)` decorator should be sent with jwt in headers
 - you can get a token when executing `signIn mutaion`
