@@ -1,16 +1,16 @@
-import { PrismaModule } from './prisma/prisma.module';
-import { JwtMiddleware } from './jwt/jwt.middleware';
-import { AuthModule } from './auth/auth.module';
+import {PrismaModule} from './prisma/prisma.module';
+import {JwtMiddleware} from './jwt/jwt.middleware';
+import {AuthModule} from './auth/auth.module';
 import {
   Module,
   NestModule,
   MiddlewareConsumer,
   RequestMethod,
 } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user/user.module';
-import { JwtModule } from './jwt/jwt.module';
+import {GraphQLModule} from '@nestjs/graphql';
+import {ConfigModule} from '@nestjs/config';
+import {UserModule} from './user/user.module';
+import {JwtModule} from './jwt/jwt.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -25,7 +25,7 @@ import * as Joi from 'joi';
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
-      context: ({ req }) => ({ user: req['user'] }),
+      context: ({req}) => ({user: req.user}),
     }),
     JwtModule.forRoot({
       secretKey: process.env.SECRET_KEY,

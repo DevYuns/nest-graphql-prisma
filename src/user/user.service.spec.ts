@@ -1,28 +1,28 @@
-import { PrismaService } from './../prisma/prisma.service';
-import { JwtService } from './../jwt/jwt.service';
-import { Gender } from './entities/user.entity';
-import { UserService } from './user.service';
-import { Test } from '@nestjs/testing';
+import {PrismaService} from './../prisma/prisma.service';
+import {JwtService} from './../jwt/jwt.service';
+import {Gender} from './entities/user.entity';
+import {UserService} from './user.service';
+import {Test} from '@nestjs/testing';
 
 const mockPrismaService = {
   user: {
     findUnique: jest.fn((args) => {
-      if (args?.where?.email === 'exists@test.com') {
+      if (args?.where?.email === 'exists@test.com')
         return {
           isSucceeded: false,
           error: 'There is an user with that email already',
         };
-      } else return false;
+      else return false;
     }),
     update: jest.fn(),
     create: jest.fn(),
   },
 };
 
-const mockJwtService = () => ({
+const mockJwtService = {
   sign: jest.fn(() => 'signed-token'),
   verify: jest.fn(),
-});
+};
 
 describe('UserService', () => {
   let service: UserService;
@@ -39,10 +39,11 @@ describe('UserService', () => {
         },
         {
           provide: JwtService,
-          useValue: mockJwtService(),
+          useValue: mockJwtService,
         },
       ],
     }).compile();
+
     service = module.get<UserService>(UserService);
     prismaService = await module.resolve<PrismaService>(PrismaService);
     jwtService = module.get<JwtService>(JwtService);
@@ -82,7 +83,7 @@ describe('UserService', () => {
       const result = await service.signUp(signUpArgs);
 
       expect(prismaService.user.create).toHaveBeenCalledTimes(1);
-      expect(result).toEqual({ isSucceeded: true });
+      expect(result).toEqual({isSucceeded: true});
     });
   });
 

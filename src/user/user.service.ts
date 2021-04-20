@@ -1,16 +1,17 @@
-import { PrismaService } from './../prisma/prisma.service';
-import { UserEntity } from './entities/user.entity';
+import {PrismaService} from './../prisma/prisma.service';
+import {UserEntity} from './entities/user.entity';
 import {
   UpdateProfileInput,
   UpdateProfileOutput,
 } from './dtos/updateProfile.dto';
-import { JwtService } from './../jwt/jwt.service';
-import { UserProfileOutput } from './dtos/userProfile.dto';
-import { SignInInput, SignInOutput } from './dtos/signIn.dto';
-import { SignUpInput, SignUpOutput } from './dtos/signUp.dto';
-import { Injectable, Inject } from '@nestjs/common';
-import { hashPassword, validatePassword } from '../common/utils/password';
-import { customAssert } from '../common/utils/customAssert';
+import {JwtService} from './../jwt/jwt.service';
+import {UserProfileOutput} from './dtos/userProfile.dto';
+import {SignInInput, SignInOutput} from './dtos/signIn.dto';
+import {SignUpInput, SignUpOutput} from './dtos/signUp.dto';
+import {Injectable, Inject} from '@nestjs/common';
+import {hashPassword, validatePassword} from '../common/utils/password';
+import {customAssert} from '../common/utils/customAssert';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -20,7 +21,8 @@ export class UserService {
 
   async findById(userId: number): Promise<UserProfileOutput> {
     try {
-      const user = await this.prisma.user.findUnique({ where: { id: userId } });
+      const user = await this.prisma.user.findUnique({where: {id: userId}});
+
       return {
         isSucceeded: true,
         user,
@@ -33,13 +35,13 @@ export class UserService {
   async signUp(data: SignUpInput): Promise<SignUpOutput> {
     try {
       const exists = await this.prisma.user.findUnique({
-        where: { email: data.email },
+        where: {email: data.email},
       });
-      if (exists) {
-        return customAssert(false, 'There is an user with that email already');
-      }
 
-      const { password } = data;
+      if (exists)
+        return customAssert(false, 'There is an user with that email already');
+
+      const {password} = data;
       const hashedPassword = await hashPassword(password);
 
       await this.prisma.user.create({
@@ -48,21 +50,25 @@ export class UserService {
           password: hashedPassword,
         },
       });
-      return { isSucceeded: true };
+
+      return {isSucceeded: true};
     } catch (error) {
       return customAssert(false, error);
     }
   }
 
-  async signIn({ email, password }: SignInInput): Promise<SignInOutput> {
+  async signIn({email, password}: SignInInput): Promise<SignInOutput> {
     try {
-      const user = await this.prisma.user.findUnique({ where: { email } });
+      const user = await this.prisma.user.findUnique({where: {email}});
+
       if (!user) return customAssert(false, 'User not found');
 
       const checkedPassword = await validatePassword(password, user.password);
+
       if (!checkedPassword) return customAssert(false, 'Wrong password');
 
       const token = this.jwtService.sign(user.id);
+
       return {
         isSucceeded: true,
         token,
@@ -78,11 +84,11 @@ export class UserService {
   ): Promise<UpdateProfileOutput> {
     try {
       await this.prisma.user.update({
-        where: { id: userId },
+        where: {id: userId},
         data: data,
       });
 
-      return { isSucceeded: true };
+      return {isSucceeded: true};
     } catch (error) {
       return customAssert(false, error);
     }
@@ -90,17 +96,17 @@ export class UserService {
 
   async updatePassword(
     authUser: UserEntity,
-    { password }: UpdateProfileInput,
+    {password}: UpdateProfileInput,
   ): Promise<UpdateProfileOutput> {
     try {
       const newPassword = await hashPassword(password);
 
       await this.prisma.user.update({
-        where: { id: authUser.id },
-        data: { password: newPassword },
+        where: {id: authUser.id},
+        data: {password: newPassword},
       });
 
-      return { isSucceeded: true };
+      return {isSucceeded: true};
     } catch (error) {
       return customAssert(false, error);
     }

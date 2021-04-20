@@ -1,6 +1,6 @@
-import { CONFIG_OPTIONS } from './../common/common.constants';
-import { Test } from '@nestjs/testing';
-import { JwtService } from './jwt.service';
+import {CONFIG_OPTIONS} from './../common/common.constants';
+import {Test} from '@nestjs/testing';
+import {JwtService} from './jwt.service';
 import * as jwt from 'jsonwebtoken';
 
 const TEST_KEY = 'testkey';
@@ -9,7 +9,7 @@ const USER_ID = 1;
 jest.mock('jsonwebtoken', () => {
   return {
     sign: jest.fn(() => 'TOKEN'),
-    verify: jest.fn(() => ({ id: USER_ID })),
+    verify: jest.fn(() => ({id: USER_ID})),
   };
 });
 
@@ -22,10 +22,11 @@ describe('JwtService', () => {
         JwtService,
         {
           provide: CONFIG_OPTIONS,
-          useValue: { secretKey: TEST_KEY },
+          useValue: {secretKey: TEST_KEY},
         },
       ],
     }).compile();
+
     service = module.get<JwtService>(JwtService);
   });
 
@@ -39,7 +40,7 @@ describe('JwtService', () => {
 
       expect(typeof token).toBe('string');
       expect(jwt.sign).toHaveBeenCalledTimes(1);
-      expect(jwt.sign).toHaveBeenCalledWith({ id: USER_ID }, TEST_KEY);
+      expect(jwt.sign).toHaveBeenCalledWith({id: USER_ID}, TEST_KEY);
     });
   });
 
@@ -48,7 +49,7 @@ describe('JwtService', () => {
       const TOKEN = 'TOKEN';
       const decodedToken = service.verify(TOKEN);
 
-      expect(decodedToken).toEqual({ id: USER_ID });
+      expect(decodedToken).toEqual({id: USER_ID});
       expect(jwt.verify).toHaveBeenCalledTimes(1);
       expect(jwt.verify).toHaveBeenCalledWith(TOKEN, TEST_KEY);
     });

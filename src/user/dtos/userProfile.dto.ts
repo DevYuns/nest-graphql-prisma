@@ -1,6 +1,6 @@
-import { CommonOutput } from './../../common/dtos/common.dto';
-import { ArgsType, Field, ObjectType } from '@nestjs/graphql';
-import { User } from '@prisma/client';
+import {CommonOutput} from './../../common/dtos/common.dto';
+import {ArgsType, Field, ObjectType} from '@nestjs/graphql';
+import {User} from '@prisma/client';
 
 @ArgsType()
 export class UserProfileInput {
@@ -10,6 +10,6 @@ export class UserProfileInput {
 
 @ObjectType()
 export class UserProfileOutput extends CommonOutput {
-  @Field({ nullable: true })
+  @Field({nullable: true})
   user?: User;
 }

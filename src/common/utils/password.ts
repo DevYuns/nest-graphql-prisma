@@ -1,11 +1,12 @@
 import * as bcrypt from 'bcrypt';
-import { InternalServerErrorException } from '@nestjs/common';
+import {InternalServerErrorException} from '@nestjs/common';
 
 const SALT_ROUND = 10;
 
 export const hashPassword = async (password: string): Promise<string> => {
   try {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUND);
+
     return hashedPassword;
   } catch (error) {
     console.log(error);

@@ -1,9 +1,4 @@
-import {
-  ObjectType,
-  Field,
-  InputType,
-  registerEnumType,
-} from '@nestjs/graphql';
+import {ObjectType, Field, InputType, registerEnumType} from '@nestjs/graphql';
 import {
   IsNumber,
   IsEmail,
@@ -21,9 +16,9 @@ export enum Gender {
   female = 'female',
 }
 
-registerEnumType(Gender, { name: 'Gender' });
+registerEnumType(Gender, {name: 'Gender'});
 
-@InputType({ isAbstract: true })
+@InputType({isAbstract: true})
 @ObjectType()
 export class UserEntity {
   @Field(() => Number)
@@ -39,7 +34,7 @@ export class UserEntity {
   @Length(PASSWORD_LENGTH)
   password: string;
 
-  @Field(() => Boolean, { defaultValue: false })
+  @Field(() => Boolean, {defaultValue: false})
   @IsBoolean()
   verified: boolean;
 
@@ -55,7 +50,7 @@ export class UserEntity {
   @IsEnum(Gender)
   gender: Gender;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, {nullable: true})
   @IsString()
   description?: string;
 }

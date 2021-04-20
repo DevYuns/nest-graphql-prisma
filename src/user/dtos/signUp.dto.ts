@@ -1,5 +1,5 @@
-import { UserEntity } from './../entities/user.entity';
-import { CommonOutput } from './../../common/dtos/common.dto';
+import {UserEntity} from './../entities/user.entity';
+import {CommonOutput} from './../../common/dtos/common.dto';
 import 'reflect-metadata';
 import {
   InputType,
@@ -8,6 +8,7 @@ import {
   PartialType,
   IntersectionType,
 } from '@nestjs/graphql';
+
 @InputType()
 class MainInfo extends PickType(UserEntity, [
   'email',
