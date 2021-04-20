@@ -18,13 +18,13 @@ app/
 ├─ dist
 ├─ node_modules/
 ├─ prisma
-│  └─ migrations                           - prisma schema migration history
+│  └─ migrations                           - `prisma.schema` migration history
 │  └─ schema.prisma                        - Main configuration file for your Prisma setup(db connection, prisma models, prisma client)
 ├─ src/                                    - Main source code folder
 │  └─ auth                                 - Authentication with `authUser` decorator and `Authguard`
-│  └─ common                               - common folder for reusable components like dtos & utils etc..
+│  └─ common                               - Common folder for reusable components like dtos & utils etc..
 │  └─ jwt
-│     └─ jwt.interfaces.ts                 - Interface for forRoot parameter.  Argument needed is injected in `app.module.ts` file.
+│     └─ jwt.interfaces.ts                 - Interface for `forRoot` parameter.  Argument needed is injected in `app.module.ts` file.
 │     └─ jwt.middleware.ts                 - Decoding incoming token if request has token in headers and Inject user info extracted from token to request object.
 │     └─ jwt.module.ts                     - A JwtModule is dynamic module. so It can be created with cusmtom dependencies.
 │     └─ jwt.service.ts                    - Generate token and verify token
@@ -34,8 +34,8 @@ app/
 │     └─ entities                          - An Entity class is also for `graphql`. because user type from prisma client is just type, so you need object to treat `graphql` object. It must be sync with models in `schema.prisma`.
 │     └─ user.module.ts                    - An UserModule entry class. It can import other modules or dependencies also export own dependencies.
 │     └─ user.resolver.ts                  - A ResolverClass works like controller in MVC architecture. It can distribute incoming queries or mutaions from client to each resolver.
-│     └─ user.service.ts                   - ServiceClass has responsibility about buissness logic. I recommend that All possible errors are handled here.
-│  └─ app.module.ts                        - An AppModule is main entry module for while modules in this project.
+│     └─ user.service.ts                   - ServiceClass has responsibility for business logic. I recommend you to handle all possible errors here.
+│  └─ app.module.ts                        - An AppModule is an main entry module.
 │  └─ main.ts                              - This is entry file like `index.js` in js project.
 ├─ test/                                   - For E2E test
 ├─ .env.sample                             - A Sample for .env file. you should copy this to .env depends on your environment.
