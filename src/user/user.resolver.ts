@@ -1,13 +1,13 @@
 import {
   UpdatePasswordOutput,
   UpdatePasswordInput,
-} from './dtos/update-password.dto';
+} from './dtos/updatePassword.dto';
 import {
   UpdateProfileOutput,
   UpdateProfileInput,
-} from './dtos/update-profile.dto';
+} from './dtos/updateProfile.dto';
 import { UserEntity } from './entities/user.entity';
-import { AuthUser } from './../auth/auth-user.decorator';
+import { AuthUser } from './../auth/authUser.decorator';
 import { AuthGuard } from './../auth/auth.guard';
 import { SignInOutput } from './dtos/signIn.dto';
 import { SignInInput } from './dtos/signIn.dto';

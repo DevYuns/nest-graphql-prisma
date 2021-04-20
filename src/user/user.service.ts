@@ -3,9 +3,9 @@ import { UserEntity } from './entities/user.entity';
 import {
   UpdateProfileInput,
   UpdateProfileOutput,
-} from './dtos/update-profile.dto';
+} from './dtos/updateProfile.dto';
 import { JwtService } from './../jwt/jwt.service';
-import { UserProfileOutput } from './dtos/user-profile.dto';
+import { UserProfileOutput } from './dtos/userProfile.dto';
 import { SignInInput, SignInOutput } from './dtos/signIn.dto';
 import { SignUpInput, SignUpOutput } from './dtos/signUp.dto';
 import { Injectable, Inject } from '@nestjs/common';
