@@ -13,7 +13,7 @@ export class JwtService {
     return jwt.sign({id: userId}, this.options.secretKey);
   }
 
-  verify(token: string) {
+  verify(token: string): string | object {
     return jwt.verify(token, this.options.secretKey);
   }
 }
